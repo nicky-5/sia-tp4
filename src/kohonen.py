@@ -1,26 +1,27 @@
 from typing import Callable
 
 import numpy as np
+
+from pandas import DataFrame
+from numpy import ndarray
 from numpy.random import Generator
 
 Epoch = int
 
-RowDiff = np.ndarray[int]
-ColDiff = np.ndarray[int]
-Distance = np.ndarray[float]
-
-RecordArray = np.ndarray[float]
-ResultMap = np.ndarray[list]
+RowDiff = ndarray[int]
+ColDiff = ndarray[int]
+Distance = ndarray[float]
+ResultMatrix = ndarray[list]
 
 def kohonen(k: int,
             iterations: int,
-            records: RecordArray,
+            df: DataFrame,
             distance: Callable[[RowDiff,ColDiff], Distance],
             radius: Callable[[Epoch], float],
             eta: Callable[[Epoch], float],
             example: bool = False,
             rng: Generator = np.random.default_rng()
-            ) -> ResultMap:
+            ) -> ResultMatrix:
     activations_out = np.zeros(shape=(k,k), dtype=np.float64)
     col_matrix, row_matrix = np.meshgrid(np.arange(k), np.arange(k))
 
@@ -30,12 +31,12 @@ def kohonen(k: int,
             result[i,j] = list()
 
     if example:
-        weights = rng.choice(records, size=(k,k))
+        weights = rng.choice(df.values, size=(k,k))
     else:
-        weights = rng.uniform(size=(k,k,records.shape[1]))
+        weights = rng.uniform(size=(k,k,df.shape[1]))
 
     
-    for epoch, record in enumerate(rng.choice(records, size=iterations)):
+    for epoch, record in enumerate(rng.choice(df.values, size=iterations)):
         activations = np.dot(weights, record, out=activations_out)
 
         winner_index = np.argmax(activations)
