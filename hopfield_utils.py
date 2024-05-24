@@ -31,10 +31,10 @@ with open("../datasets/letters.txt") as fp:
             letters[string.ascii_uppercase[len(letters)]] = current
             current = np.ones((5,5)) * -1
             idx = 0
-            else:
-                for i,c in enumerate(line.strip('\n')):
-                    current[idx][i] = 1 if c == '*' else -1
-                idx += 1
+        else:
+            for i,c in enumerate(line.strip('\n')):
+                current[idx][i] = 1 if c == '*' else -1
+            idx += 1
 
 n = 6
 letters_list = list(letters.values())
