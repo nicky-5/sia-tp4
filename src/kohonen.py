@@ -8,10 +8,10 @@ from numpy.random import Generator
 
 Epoch = int
 
-RowDiff = ndarray[int]
-ColDiff = ndarray[int]
-Distance = ndarray[float]
-ResultMatrix = ndarray[list]
+RowDiff = ndarray
+ColDiff = ndarray
+Distance = ndarray
+ResultMatrix = ndarray
 
 def kohonen(k: int,
             iterations: int,
