@@ -5,7 +5,7 @@ from src.hopfield import hopfield
 
 if __name__ == "__main__":
 
-    letters = ['O', 'Q', 'T', 'X']
+    letters = ['G', 'R', 'T', 'V']
     
     matrix = utils.letter_matrix(letters)
 
@@ -26,5 +26,6 @@ if __name__ == "__main__":
 
         print(f"Energy: {energy}")
         print(f"Iterations: {iterations}")
-        utils.create_heatmap(S_f)
+        for i in range(iterations):
+            utils.create_heatmap(S[i])
     

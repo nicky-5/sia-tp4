@@ -45,15 +45,6 @@ if __name__ == "__main__":
     )
     epochs, converged = linear_perceptron.train(1000)
 
-    print("\n----- LinearPerceptron -----\n")
-
-    if not converged:
-        print(f"Did not converge after {epochs} epochs\n")
-    else:
-        print(f"Finished learning at {epochs} epochs\n")
-        print("Output: ", linear_perceptron.get_outputs())
-        print("Weights: ", linear_perceptron.weights)
-
     # print(linear_perceptron)
 
     w = linear_perceptron.weights
