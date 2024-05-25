@@ -2,8 +2,8 @@ import numpy as np
 
 class hopfield:
     def __init__(self, pattern: np.ndarray, input: np.ndarray):
-        if not self._is_stable(pattern):
-            raise ValueError("Pattern is not stable")
+        # if not self._is_stable(pattern):
+        #     raise ValueError("Pattern is not stable")
         self.P = pattern.shape[0]                       # Number of patterns
         self.W = np.dot(pattern,pattern.T) / self.P     # Weight matrix
         np.fill_diagonal(self.W,0)                      # Diagonal to 0
@@ -21,12 +21,7 @@ class hopfield:
     def conerged(self) -> bool:
         return (len(self.S) >= 2 and np.array_equal(self.S[-1], self.S[-2])) or self.t > 1000
     
-    def train(self):
-        while not self.conerged:
-            self.S.append(self.activation_function)
-            self.t += 1
-        
-        return self.S[-1], self.S, self.energy, self.t
+
     
     # checkeo si los vectores son ortogonales
     def _is_stable(self, vectors: np.ndarray):
@@ -47,3 +42,10 @@ class hopfield:
                     h[i] += self.W[i,j] * self.S[-1][j]
         
         return np.sign(h)
+    
+    def train(self):
+        while not self.conerged:
+            self.S.append(self.activation_funtion)
+            self.t += 1
+        
+        return self.S[-1], self.S, self.energy, self.t
