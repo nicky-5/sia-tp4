@@ -24,8 +24,8 @@ def kohonen(k: int,
             iterations: int,
             df: DataFrame,
             distance: Callable[[RowDiff,ColDiff], Distance],
-            radius: Callable[[Epoch], float],
-            eta: Callable[[Epoch], float],
+            radius: float,
+            eta: float,
             example: bool = False,
             label: Optional[str] = None,
             rng: Generator = np.random.default_rng()
@@ -41,14 +41,21 @@ def kohonen(k: int,
         weights = rng.uniform(size=(k,k,df_numeric.shape[1]))
 
     # Train neurons
-    for epoch, record_numeric in enumerate(rng.choice(df_numeric.values, size=iterations)):
-        winner_row, winner_col = get_winner(weights, record_numeric)
-        
-        distances = distance(row_matrix - winner_row, col_matrix - winner_col)
+        current_eta = eta
+        current_rad = radius
+        for epoch, record_numeric in enumerate(rng.choice(df_numeric.values, size=iterations)):
+            winner_row, winner_col = get_winner(weights, record_numeric)
 
-        for row, col in np.transpose(np.nonzero(distances < radius(epoch))):
-            weights[row, col] += eta(epoch) * (record_numeric - weights[row, col])
-            
+
+            distances = distance(row_matrix - winner_row, col_matrix - winner_col)
+
+            for row, col in np.transpose(np.nonzero(distances < current_rad)):
+                weights[row, col] += current_eta * (record_numeric - weights[row, col])
+
+            current_eta = current_eta * (1 - epoch/iterations)     # 1 to 0
+            current_rad = current_rad * (1 - epoch/iterations)
+            current_rad = 1 if current_rad < 1 else current_rad
+
     # Initialize return matrix
     records_matrix = np.empty(shape=(k,k), dtype=list)
     for i in range(k):
@@ -60,6 +67,6 @@ def kohonen(k: int,
         winner_row, winner_col = get_winner(weights, record_numeric)
 
         records_matrix[winner_row, winner_col].append(record)
-    
+
     return (records_matrix, weights)
-    
+
