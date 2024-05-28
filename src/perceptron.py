@@ -23,7 +23,7 @@ def constant_learning_rate(learning_rate, learning_rate_original, epoch):
 
 
 def iterative_learning_rate(learning_rate, learning_rate_original, epoch):
-    if (learning_rate > 10**-5):
+    if (learning_rate > 10**-7):
         return learning_rate_original / (epoch + 1)
     return learning_rate
 
@@ -35,7 +35,7 @@ class Perceptron:
         expected_value: np.array,
         learning_rate: float = 0.000001,
         training_method=online_training_method,
-        learning_rate_fun=iterative_learning_rate
+        learning_rate_fun=constant_learning_rate
     ):
         self.learning_rate = learning_rate
         self.learning_rate_original = learning_rate
